@@ -1,0 +1,18 @@
+{
+  "name": "s3-presigned-url",
+  "version": "1.0.0",
+  "description": "This is a serverless solution on AWS to generate presigned URLs for uploading files to S3",
+  "main": "handler.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "aws"
+  ],
+  "author": "Shashank Rajak",
+  "license": "ISC",
+  "dependencies": {
+    "aws-sdk": "^2.1285.0",
+    "uuid": "^9.0.0"
+  }
+}

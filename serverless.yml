@@ -1,0 +1,40 @@
+service: s3-presigned-url
+
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  region: ap-south-1
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - s3:GetObject
+        - s3:PutObject
+      Resource: !Join ["/", [!GetAtt privateUploadS3Bucket.Arn, "*"]]
+
+functions:
+  generateS3PresignedUrl:
+    handler: src/generateS3PresignedUrl.main
+    environment:
+      BUCKET_NAME: !Ref privateUploadS3Bucket
+      EXPIRES_IN: 7200
+    events:
+      - http:
+          path: /presigned-url
+          method: post
+
+resources:
+  Resources:
+    privateUploadS3Bucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: amazing-cloud-youtube
+        AccessControl: PublicRead
+        PublicAccessBlockConfiguration:
+          BlockPublicAcls: TRUE
+          BlockPublicPolicy: TRUE
+          IgnorePublicAcls: TRUE
+          RestrictPublicBuckets: TRUE
+
+
